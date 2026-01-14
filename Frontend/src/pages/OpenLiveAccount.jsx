@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Eye, 
   EyeOff, 
@@ -7,11 +7,39 @@ import {
   HelpCircle,
   MessageCircle
 } from "lucide-react"; 
+// Ensure the path matches where you saved the FAQModal component
+import FAQModal from "../modal/FAQModal.jsx";
+
+const slideData = [
+  {
+    id: 1,
+    image: "/slide-1-cards.png", 
+    title: "OPEN A LIVE TRADING ACCOUNT IN 5 MINUTES",
+  },
+  {
+    id: 2,
+    image: "/slide-2-phone.png", 
+    title: "AN AWARD-WINNING GLOBALLY RECOGNISED BROKER",
+  },
+  {
+    id: 3,
+    image: "/slide-3-grid.png", 
+    title: "EXPERIENCE CFD TRADING WITH A VANTAGE LIVE ACCOUNT",
+  },
+  {
+    id: 4,
+    image: "/slide-4-grid.png", 
+    title: "TRADE ANYWHERE, ANYTIME WITH VANTAGE APP",
+  },
+];
 
 export default function OpenLiveAccount() {
   const [activeTab, setActiveTab] = useState("email");
   const [showPassword, setShowPassword] = useState(false);
   const [accountType, setAccountType] = useState("individual");
+  
+  // State for FAQ Modal
+  const [showFAQModal, setShowFAQModal] = useState(false);  
 
   const [formData, setFormData] = useState({
     country: "United Kingdom",
@@ -24,6 +52,19 @@ export default function OpenLiveAccount() {
     agreed: false
   });
 
+  // --- CAROUSEL STATE ---
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlideIndex((prevIndex) =>
+        prevIndex === slideData.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 5000); 
+
+    return () => clearInterval(interval);
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form Data:", { type: activeTab, accountType, ...formData });
@@ -32,83 +73,77 @@ export default function OpenLiveAccount() {
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-white font-sans">
       
-      {/* LEFT PANEL */}
-      <div className="hidden lg:flex relative flex-col justify-between overflow-hidden bg-slate-900">
+      {/* --- LEFT VISUAL PANEL --- */}
+      <div className="hidden lg:flex relative flex-col justify-center overflow-hidden bg-slate-900">
         
-        {/* Background Image */}
+        {/* 1. STATIC BACKGROUND */}
         <div className="absolute inset-0 opacity-60">
             <img 
-                src="openliveleft.jpg" 
+                src="/openliveleft.jpg" 
                 alt="Background" 
                 className="w-full h-full object-cover"
             />
-             {/* Gradient*/}
+            {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-transparent to-slate-900/90" />
         </div>
 
-        {/* Content Container */}
-        <div className="relative z-10 flex flex-col items-center justify-center h-full px-12">
-          
-          {/* Feature Cards */}
-          <div className="space-y-4 w-full max-w-md mb-12">
+        {/* 2. DYNAMIC CONTENT CAROUSEL */}
+        <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
             
-            {/* Card 1 - Zero Commission */}
-            <div className="bg-white rounded-xl p-4 flex items-center gap-4 shadow-lg animate-fade-in-up">
-              <div className="w-12 h-12 flex-shrink-0 rounded-full bg-orange-50 flex items-center justify-center p-2">
-                <img src="/zerocommision.png" alt="Zero Commission" className="w-full h-full object-contain" />
-              </div>
-              <p className="text-sm font-medium text-gray-700">
-                Enjoy <span className="font-bold">$0 commissions</span> when you trade US shares
-              </p>
-            </div>
+            {slideData.map((slide, index) => (
+                <div 
+                    key={slide.id}
+                    className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-1000 ease-in-out px-12 ${
+                        index === currentSlideIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+                    }`}
+                >
+                    {/* Slide Image */}
+                    <div className="w-full max-w-lg mb-12 flex items-center justify-center">
+                        <img 
+                            src={slide.image} 
+                            alt={`Slide ${index}`}
+                            className="w-auto h-auto max-h-[400px] object-contain drop-shadow-2xl animate-fade-in-up"
+                        />
+                    </div>
 
-            {/* Card 2 - Expert Trades */}
-            <div className="bg-white rounded-xl p-4 flex items-center gap-4 shadow-lg">
-              <div className="w-12 h-12 flex-shrink-0 rounded-full bg-orange-50 flex items-center justify-center p-2">
-                 <img src="/expertTrades.png" alt="Expert Trades" className="w-full h-full object-contain" />
-              </div>
-              <p className="text-sm font-medium text-gray-700">
-                <span className="font-bold">Copy the trades of experts</span> with our copy trading feature
-              </p>
-            </div>
+                    {/* Slide Text */}
+                    <h2 className="text-white text-3xl font-bold text-center uppercase tracking-wide leading-snug max-w-lg drop-shadow-lg">
+                        {slide.title}
+                    </h2>
+                </div>
+            ))}
 
-             {/* Card 3 - Exclusive Benefits */}
-             <div className="bg-white rounded-xl p-4 flex items-center gap-4 shadow-lg">
-              <div className="w-12 h-12 flex-shrink-0 rounded-full bg-orange-50 flex items-center justify-center p-2">
-                 <img src="/exclusiveBenefits.png" alt="Exclusive Benefits" className="w-full h-full object-contain" />
-              </div>
-              <p className="text-sm font-medium text-gray-700">
-                Unlock <span className="font-bold">exclusive benefits</span> from our Loyalty Programme
-              </p>
-            </div>
-          </div>
-
-          {/* Large Text */}
-          <h2 className="text-white text-3xl font-bold text-center uppercase tracking-wide leading-snug max-w-lg">
-            Open a live trading account in 5 minutes
-          </h2>
-
-           {/* Pagination Dots */}
-           <div className="flex gap-2 mt-8">
-               <div className="w-6 h-1.5 bg-white rounded-full"></div>
-               <div className="w-1.5 h-1.5 bg-white/50 rounded-full"></div>
-               <div className="w-1.5 h-1.5 bg-white/50 rounded-full"></div>
-           </div>
         </div>
 
-        {/* Bottom Left FAQ */}
-        <div className="relative z-10 p-8">
-            <button className="flex items-center gap-2 text-white/70 hover:text-white transition text-sm">
-                <div className="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center">
+        {/* 3. PAGINATION DOTS */}
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+            {slideData.map((_, index) => (
+                <div 
+                    key={index} 
+                    className={`h-1.5 rounded-full transition-all duration-500 ${
+                        index === currentSlideIndex ? "bg-white w-8" : "bg-white/50 w-2"
+                    }`} 
+                />
+            ))}
+        </div>
+
+        {/* 4. FAQ LINK BUTTON */}
+        <div className="absolute bottom-8 left-8 z-20">
+            <button 
+                className="flex items-center gap-2 text-white/70 hover:text-white transition text-sm group"
+                onClick={() => setShowFAQModal(true)}
+            >
+                <div className="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center border border-white/20 group-hover:border-white transition-colors">
                     <HelpCircle size={14} />
                 </div>
                 Click Here To See FAQ
             </button>
         </div>
+
       </div>
 
 
-      {/* RIGHT FORM PANEL */}
+      {/* --- RIGHT FORM PANEL --- */}
       <div className="relative flex flex-col items-center justify-center px-6 py-10 w-full overflow-y-auto">
         
         {/* Top Right Language Selector */}
@@ -172,9 +207,8 @@ export default function OpenLiveAccount() {
                     <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={20} />
                 </div>
 
-                {/*CONDITIONAL RENDERING FOR EMAIL VS PHONE*/}
+                {/* Conditional Inputs */}
                 {activeTab === "email" ? (
-                    // Email Input
                     <input 
                         type="email" 
                         placeholder="Email"
@@ -183,7 +217,6 @@ export default function OpenLiveAccount() {
                     />
                 ) : (
                     <div className="flex gap-3">
-                        {/* Code Dropdown */}
                         <div className="relative w-1/3">
                             <select 
                                 className="w-full h-[52px] bg-gray-100 rounded-lg pl-3 pr-8 text-gray-700 outline-none focus:ring-2 focus:ring-[#F36A2E]/20 appearance-none cursor-pointer"
@@ -196,8 +229,6 @@ export default function OpenLiveAccount() {
                             </select>
                             <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
                         </div>
-
-                        {/* Phone Number Input */}
                         <input 
                             type="tel" 
                             placeholder="Phone"
@@ -300,6 +331,10 @@ export default function OpenLiveAccount() {
         </div>
 
       </div>
+
+      {/* --- RENDER FAQ MODAL IF STATE IS TRUE --- */}
+      {showFAQModal && <FAQModal onClose={() => setShowFAQModal(false)} />}
+
     </div>
   );
 }

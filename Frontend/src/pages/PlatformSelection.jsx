@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-// Make sure DepositModal.jsx exists in the same folder
-import DepositModal from "./DepositModal"; 
+import DepositModal from "../modal/DepositModal.jsx"; 
 
 export default function PlatformSelection() {
   const [showDeposit, setShowDeposit] = useState(false);
@@ -125,7 +124,7 @@ export default function PlatformSelection() {
 
             {/* ACTION BUTTON LOGIC */}
             {platform.id === "demo" ? (
-                // Logic: Demo goes to link
+
                 <Link 
                     to={platform.link}
                     className="w-full py-3.5 rounded-full bg-[#E85C2A] text-white font-bold hover:bg-[#d65a25] transition active:scale-[0.98] shadow-md block text-center"
@@ -133,7 +132,6 @@ export default function PlatformSelection() {
                     {platform.buttonText}
                 </Link>
             ) : (
-                // Logic: Live accounts open the Deposit Modal
                 <button
                     onClick={() => setShowDeposit(true)}
                     className="w-full py-3.5 rounded-full bg-[#E85C2A] text-white font-bold hover:bg-[#d65a25] transition active:scale-[0.98] shadow-md"
