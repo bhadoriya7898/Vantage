@@ -12,12 +12,12 @@ function App() {
   return (
     <>
     <Routes>
-      <Route path='/' element={<PlatformSelection/>}/>
-      <Route path='start-trading' element={<DepositModal/>}/>
-      <Route path='auth' element={<AuthLanding/>}/>
+      <Route path='/' element={<AuthLanding/>}/>
+      <Route path='auth' element={<PlatformSelection/>}/>
       <Route path='login' element={<ClientPortalLogin/>}/>
       <Route path='signup' element={<OpenLiveAccount/>}/>
       <Route path='faq' element={<FAQModal/>}/>
+      <Route path='start-trading' element={<DepositModal/>}/>
     </Routes>
     </>
   )

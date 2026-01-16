@@ -56,7 +56,7 @@ export default function PlatformSelection() {
         "Ideal for beginners"
       ],
       buttonText: "Open Free Demo",
-      link: "/auth"
+      link: "/login"
     }
   ];
 

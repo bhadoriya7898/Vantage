@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Copy, Clock, X } from "lucide-react"; 
+import PaymentSuccessModal from "./PaymentSuccessModal";
 const walletData = {
   trc20: [
     { address: "TRC_Addr1_TGnT6CTfHYJVYLHeHukc5REYZs76G76ggX", qr: "/qr-placeholder.png" },
@@ -40,7 +41,8 @@ export default function DepositModal({ onClose }) {
   const [amount, setAmount] = useState("1500");
   const [timeLeft, setTimeLeft] = useState(90); 
   
-
+  const [showSuccess, setShowSuccess] = useState(false);
+  
   const [currentWallet, setCurrentWallet] = useState(() => {
      const defaultPool = walletData["trc20"];
      return defaultPool[Math.floor(Math.random() * defaultPool.length)];
@@ -80,6 +82,10 @@ export default function DepositModal({ onClose }) {
     { id: "erc20", label: "ERC 20", icon: "/erc.png" },
     { id: "btc", label: "BTC", icon: "/btc.png" },
   ];
+ 
+  if (showSuccess) {
+      return <PaymentSuccessModal onDone={onClose} />;
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm p-4 font-sans">
@@ -192,7 +198,11 @@ export default function DepositModal({ onClose }) {
         </div>
 
         {/* --- ACTION BUTTON --- */}
-        <button className="w-full py-4 rounded-full bg-[#E85C2A] text-white font-bold text-sm tracking-wider shadow-lg hover:bg-[#d65a25] transition active:scale-[0.98]">
+        {/* PAY BUTTON */}
+        <button 
+            onClick={() => setShowSuccess(true)}
+            className="w-full py-4 rounded-full bg-[#E85C2A] text-white font-bold text-sm tracking-wider shadow-lg hover:bg-[#d65a25] transition active:scale-[0.98]"
+        >
             PAY NOW
         </button>
 
