@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { ChevronDown } from "lucide-react"; 
-
+import { ChevronDown } from "lucide-react";
+import { Link } from "react-router-dom";
 export default function ClientPortalLogin() {
   const [activeTab, setActiveTab] = useState("email");
   const [countryCode, setCountryCode] = useState("+91");
-  
 
   const [formData, setFormData] = useState({
-    identifier: "", 
-    password: ""
+    identifier: "",
+    password: "",
   });
 
   const handleInputChange = (e) => {
@@ -20,13 +19,12 @@ export default function ClientPortalLogin() {
     console.log("Login Payload:", {
       type: activeTab,
       countryCode: activeTab === "phone" ? countryCode : null,
-      ...formData
+      ...formData,
     });
   };
 
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-white font-sans">
-      
       {/* LEFT PANEL */}
       <div className="hidden lg:flex relative items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#f2f2f2] via-[#f6c6a8] to-[#1b5f6d]" />
@@ -34,7 +32,11 @@ export default function ClientPortalLogin() {
         <div className="relative z-10 flex flex-col items-center gap-6">
           <div className="flex items-center gap-6">
             <div className="w-[442px] h-[300px] flex items-center justify-center">
-              <img src="/sideimg.png" alt="Vantage" className="object-contain" />
+              <img
+                src="/sideimg.png"
+                alt="Vantage"
+                className="object-contain"
+              />
             </div>
           </div>
 
@@ -50,19 +52,20 @@ export default function ClientPortalLogin() {
 
       {/* RIGHT LOGIN PANEL */}
       <div className="flex items-center justify-center px-4">
-       {/*LANGUAGE SELECTOR*/}
+        {/*LANGUAGE SELECTOR*/}
         <div className="absolute top-6 right-6 z-20">
           <button className="px-4 py-2 rounded-full border text-sm shadow-sm hover:bg-gray-50 transition bg-white">
             English
           </button>
         </div>
         <div className="w-full max-w-[420px] py-12 relative">
-          
-          
-
           {/* Logo */}
           <div className="flex justify-center mb-6">
-            <img src="/logo.png" alt="Vantage" className="h-14 object-contain" />
+            <img
+              src="/logo.png"
+              alt="Vantage"
+              className="h-14 object-contain"
+            />
           </div>
 
           {/* Heading */}
@@ -127,7 +130,7 @@ export default function ClientPortalLogin() {
                     <option value="+61">+61</option>
                     <option value="+65">+65</option>
                   </select>
-                  
+
                   {/*Icon*/}
                   <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-500">
                     <ChevronDown size={16} />
@@ -155,22 +158,25 @@ export default function ClientPortalLogin() {
               className="w-full h-[52px] px-4 rounded-lg bg-gray-100 outline-none focus:ring-2 focus:ring-[#0A4A53]/20 transition border border-transparent focus:border-[#0A4A53]"
             />
 
-            <button className="w-full h-[56px] rounded-full bg-[#F36A2E] text-white font-medium shadow-lg hover:opacity-90 hover:shadow-xl active:scale-[0.99] transition-all">
+            <Link
+              to="/auth" // 2. Use 'to' instead of 'onClick'
+              className="w-full h-[56px] rounded-full bg-[#F36A2E] text-white font-medium shadow-lg hover:opacity-90 hover:shadow-xl active:scale-[0.99] transition-all flex items-center justify-center" // Added flex centering
+            >
               Log in
-            </button>
+            </Link>
           </form>
 
           {/* Divider */}
           <div className="flex items-center gap-4 my-6">
             <div className="flex-1 h-px bg-gray-200" />
-            <span className="text-xs text-gray-400 uppercase tracking-wide">Other Login Method</span>
+            <span className="text-xs text-gray-400 uppercase tracking-wide">
+              Other Login Method
+            </span>
             <div className="flex-1 h-px bg-gray-200" />
           </div>
 
           {/* Telegram Button */}
-          <button
-            className="w-full h-[52px] rounded-full bg-gray-100 flex items-center justify-center gap-3 hover:bg-gray-200 transition group"
-          >
+          <button className="w-full h-[52px] rounded-full bg-gray-100 flex items-center justify-center gap-3 hover:bg-gray-200 transition group">
             <img
               src="/telegramlogo.png"
               alt="Telegram"
@@ -181,12 +187,17 @@ export default function ClientPortalLogin() {
 
           {/* Links */}
           <div className="mt-4 text-sm text-[#F36A2E] text-center">
-            <a href="#" className="hover:underline">Forgot Password?</a>
+            <a href="#" className="hover:underline">
+              Forgot Password?
+            </a>
           </div>
 
           <div className="mt-8 text-center text-sm">
             <span className="text-gray-500">Not A Client?</span>{" "}
-            <a href="/signup" className="text-[#F36A2E] font-medium hover:underline">
+            <a
+              href="/signup"
+              className="text-[#F36A2E] font-medium hover:underline"
+            >
               Open Live Account
             </a>
           </div>
@@ -199,7 +210,6 @@ export default function ClientPortalLogin() {
               className="h-16 w-auto md:h-20 lg:h-24 drop-shadow-xl"
             />
           </div>
-
         </div>
       </div>
     </div>
